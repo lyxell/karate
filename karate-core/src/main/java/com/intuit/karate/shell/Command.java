@@ -161,11 +161,9 @@ public class Command extends Thread {
             LOGGER.trace("preferred port {} in use (karate), will attempt to find free port ...", preferred);
             preferred = 0;
         }
-        try {
-            ServerSocket s = new ServerSocket(preferred);
+        try (ServerSocket s = new ServerSocket(preferred)) {
             int port = s.getLocalPort();
             LOGGER.debug("found / verified free local port: {}", port);
-            s.close();
             PORTS_IN_USE.add(port);
             return port;
         } catch (Exception e) {

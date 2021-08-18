@@ -72,13 +72,11 @@ public class MonitorThread extends Thread {
     }   
     
     public static void stop(int port) {
-         try {
-            Socket s = new Socket(InetAddress.getByName("127.0.0.1"), port);
+         try (Socket s = new Socket(InetAddress.getByName("127.0.0.1"), port)) {
             OutputStream out = s.getOutputStream();
             logger.info("sending stop request to monitor thread on port: {}", port);
             out.write(("\r\n").getBytes());
             out.flush();
-            s.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }       
